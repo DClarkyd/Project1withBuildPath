@@ -47,7 +47,7 @@ export class SignInComponent extends React.Component<RouteComponentProps<{}>, IS
     e.preventDefault();
     fetch(environment.context + 'users/login', {
       body: JSON.stringify(this.state.credentials),
-      credentials: 'include',
+      // credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
