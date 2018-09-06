@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { environment } from '../../environment';
 
 interface IState {
   credentials: {
@@ -44,7 +45,7 @@ export class SignInComponent extends React.Component<RouteComponentProps<{}>, IS
 
   public submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch('http://localhost:3001/users/login', {
+    fetch(environment.context + 'users/login', {
       body: JSON.stringify(this.state.credentials),
       credentials: 'include',
       headers: {
