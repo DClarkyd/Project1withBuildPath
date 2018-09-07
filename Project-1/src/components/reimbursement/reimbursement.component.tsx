@@ -88,7 +88,7 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
   public onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     fetch(environment.context + 'reimbursements/add-reimbursement', {
-      
+
       body: JSON.stringify(this.state.credentials),
       credentials: 'include',
       headers: {
@@ -97,8 +97,13 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
       method: 'POST',
     })
       .then(resp => {
-     
-        if (resp.status === 200) {
+        console.log(resp.status)
+        if (resp.status === 401) {
+          this.setState({
+            ...this.state,
+            errorMessage: 'Invalid Credentials'
+          });
+        } else if (resp.status === 201) {
           return resp.json();
         } else {
           this.setState({
@@ -108,6 +113,10 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
         }
         throw new Error('Failed to reimburse');
       })
+      .then(resp => {
+        localStorage.setItem('reimbursement', JSON.stringify(resp));
+        this.props.history.push('/home');
+      })
       .catch(err => {
         console.log(err);
       })
@@ -116,7 +125,6 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
   public render() {
     const { errorMessage, credentials } = this.state;
     // const date = new Date()
-    // console.log(date)
     return (
       <form className="form-signup" onSubmit={this.onSubmit}>
         <h1 className="h3 mb-3 font-weight-normal">Please fill in the reimbursement information</h1>
@@ -162,17 +170,7 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
           placeholder="Reimbursement Type"
           required />
 
-        {/* <label htmlFor="inputReimbSubmitted" className="sr-only">Reimbursement Submitted</label>
-           <div
-             onChange={this.reimbSubmittedSet}
-             value={credentials.reimbDescription}
-             type="date"
-             id="inputEmail"
-             className="form-control"
-             placeholder="Reimbursement Description"
-              /> */}
-
-        <button className="btn btn-lg btn-primary btn-block" type="submit" value = "Add Node server">Sign in</button>
+        <button className="btn btn-lg btn-primary btn-block" type="submit" value="Add Node server">Sign in</button>
         {errorMessage && <p id="error-message">{errorMessage}</p>}
       </form>
     );

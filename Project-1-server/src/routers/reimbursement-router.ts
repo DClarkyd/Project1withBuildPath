@@ -50,7 +50,7 @@ reimbursementRouter.post('/add-reimbursement', [
   async (req, resp) => {
     console.log('creating reimbursement')
     try {
-      console.log(req.body)
+      // console.log(req.body)
       const id = await reimbursementDao.createReimbursement(req.body);
       resp.status(201);
       resp.json(id);
