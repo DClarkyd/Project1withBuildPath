@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
 import express from 'express';
 import * as reimbursementDao from '../dao/reimbursement-dao';
-// import { authMiddleware } from '../security/authorization-middleware';
+import { authMiddleware } from '../security/authorization-middleware';
 
 // all routes defiend with this object will imply /reimbursements
 export const reimbursementRouter = express.Router(); // routers represent a subset of routes for the express application
-
 
 /**
  * Find all reimbursements
@@ -14,7 +13,7 @@ reimbursementRouter.get('', [
   // authMiddleware('admin', 'customer'),
   async (req: Request, resp: Response) => {
     try {
-      console.log('retrieving all movies');
+      console.log('retrieving all reimbursements');
       let reimbursements = await reimbursementDao.findAll();
       resp.json(reimbursements);
     } catch (err) {
@@ -45,10 +44,13 @@ reimbursementRouter.get('/:id', async (req, resp) => {
 /**
  * Create a reimbursement
  */
-reimbursementRouter.post('', [
+reimbursementRouter.post('/add-reimbursement', [
+  
   // authMiddleware('admin'),
   async (req, resp) => {
+    console.log('creating reimbursement')
     try {
+      console.log(req.body)
       const id = await reimbursementDao.createReimbursement(req.body);
       resp.status(201);
       resp.json(id);

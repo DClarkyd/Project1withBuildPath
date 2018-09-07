@@ -3,12 +3,12 @@ export class Reimbursement {
   amount = 0
   resolved = ''
   description = ''
-  author = ''
+  author = 0
   resolver = ''
   statusId = 0
   typeId = 0
 
-  constructor(id?: number, amount?: number, resolved?: string, description?: string, author?: string, resolver?: string, statusId?: number, typeId?: number) {
+  constructor(id?: number, amount?: number, resolved?: string, description?: string, author?: number, resolver?: string, statusId?: number, typeId?: number) {
     id && (this.id = id);
     amount && (this.amount = amount);
     resolved && (this.resolved = resolved);

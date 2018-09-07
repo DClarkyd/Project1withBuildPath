@@ -20,13 +20,11 @@ class App extends React.Component {
           <div id="main-content-container">
             <Switch>
               <Route path="/check-reimbursements" component={CheckAllReimbursements} />
-              <Route path="/reimbursement" component={ReimbursementComponent} />
+              <Route path="/add-reimbursement" component={ReimbursementComponent} />
               <Route path="/home" component={HomeComponent} />
               <Route path="/sign-in" component={SignInComponent} />
               <Route path="/sign-up" component={SignUpComponent} />
               <Route path="/check-status" component = {CheckStatus}/>
-
-
               <Route component={HomeComponent} />
             </Switch>
           </div>

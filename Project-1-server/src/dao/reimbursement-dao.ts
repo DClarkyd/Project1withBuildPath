@@ -36,18 +36,18 @@ export async function findById(id: number): Promise<Reimbursement> {
 }
 
 /**
- * Add a new movie to the DB
- * @param movie 
+ * Add a new reimbursement to the DB
+ * @param reimbursement
  */
 export async function createReimbursement(reimbursement): Promise<number> {
   const client = await connectionPool.connect();
   try {
     const resp = await client.query(
-      `INSERT INTO movies.movies 
-        (title, num_blades, year)
-        VALUES ($1, $2, $3)
-        RETURNING movie_id`, [reimbursement.amount, reimbursement.submitted, reimbursement.resolved, reimbursement.description, reimbursement.author, reimbursement.resolver, reimbursement.statusId, reimbursement.typeId ]);
-    return resp.rows[0].reimbursement_id;
+      `INSERT INTO expense_reimbursement.reimbursement_info 
+        (reimb_amount, reimb_description, reimb_author, reimb_type_id, reimb_status_id, reimb_resolver)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING reimb_id`, [reimbursement.reimbAmount, reimbursement.reimbDescription, reimbursement.reimbAuthor, reimbursement.reimbType, 0, 1]);
+    return resp.rows[0].reimbursementId;
   } finally {
     client.release();
   }

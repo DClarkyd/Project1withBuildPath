@@ -17,16 +17,16 @@ export const AppNav: React.StatelessComponent<{}> = () => {
             <li className="nav-item active">
               <Link to="/sign-in" className="unset-anchor nav-link">Sign In</Link>
             </li>
-            <li className="nav-item active">
+            {/* <li className="nav-item active">
               <Link to="/sign-up" className="unset-anchor nav-link">Sign Up</Link>
-            </li>
+            </li> */}
 
             <li className="nav-item active">
               <Link to="/check-reimbursements" className="unset-anchor nav-link">Check All Reimbursements</Link>
             </li>
 
             <li className="nav-item active">
-              <Link to="/reimbursement" className="unset-anchor nav-link">New Reimbursement</Link>
+              <Link to="/add-reimbursement" className="unset-anchor nav-link">New Reimbursement</Link>
             </li>
 
                         <li className="nav-item active">
