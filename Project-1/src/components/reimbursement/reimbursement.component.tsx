@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { environment } from '../../environment';
+import { updateUsername } from '../../actions/sign-in/sign-in.actions';
 
 interface IState {
   credentials: {
     reimbAmount: number,
-    reimbSubmitted: string,
     reimbDescription: string,
-    reimbAuthor: string,
-    reimbType: string
+    reimbAuthor: number,
+    reimbType: number
   },
   errorMessage: string
 }
@@ -18,18 +18,19 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
   constructor(props: any) {
     super(props);
     this.onReimbAmountSet = this.onReimbAmountSet.bind(this)
-    this.onReimbAuthorSet = this.onReimbAuthorSet.bind(this)
     this.onReimbDescriptionSet = this.onReimbDescriptionSet.bind(this)
-    this.onReimbSubmittedSet = this.onReimbSubmittedSet.bind(this)
     this.onReimbTypeSet = this.onReimbTypeSet.bind(this)
 
+    const userJSON = localStorage.getItem("user")
+    const user = userJSON !== null ? JSON.parse(userJSON) : updateUsername
+    console.log(user.usersId)
+    
     this.state = {
       credentials: {
         reimbAmount: 0,
-        reimbAuthor: '',
+        reimbAuthor: Number(user.usersId),
         reimbDescription: '',
-        reimbSubmitted: '',
-        reimbType: ''
+        reimbType: 0
       },
       errorMessage: ''
     }
@@ -41,26 +42,6 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
       credentials: {
         ...this.state.credentials,
         reimbAmount: e.target.value
-      }
-    });
-  }
-
-  public onReimbAuthorSet = (e: any) => {
-    this.setState({
-      ...this.state,
-      credentials: {
-        ...this.state.credentials,
-        reimbAuthor: e.target.value
-      }
-    });
-  }
-
-  public onReimbSubmittedSet = (e: any) => {
-    this.setState({
-      ...this.state,
-      credentials: {
-        ...this.state.credentials,
-        reimbSubmitted: e.target.value
       }
     });
   }
@@ -97,7 +78,7 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
       method: 'POST',
     })
       .then(resp => {
-        console.log(resp.status)
+        // console.log(resp.status)
         if (resp.status === 401) {
           this.setState({
             ...this.state,
@@ -128,8 +109,8 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
     return (
       <form className="form-signup" onSubmit={this.onSubmit}>
         <h1 className="h3 mb-3 font-weight-normal">Please fill in the reimbursement information</h1>
-        {this.onReimbSubmittedSet}
 
+        <div>Reimbursement Amount:</div>
         <label htmlFor="inputReimbAmount" className="sr-only">Reimbursement Amount</label>
         <input
           onChange={this.onReimbAmountSet}
@@ -138,16 +119,6 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
           id="inputReimbAmount"
           className="form-control"
           placeholder="Reimbursement Amount"
-          required />
-
-        <label htmlFor="inputReimbAuthour" className="sr-only">Reimbursement Author</label>
-        <input
-          onChange={this.onReimbAuthorSet}
-          value={credentials.reimbAuthor}
-          type="text"
-          id="inputReimbAuthor"
-          className="form-control"
-          placeholder="Reimbursement Author"
           required />
 
         <label htmlFor="inputReimbDescription" className="sr-only">Reimbursement Description</label>
@@ -160,7 +131,17 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
           placeholder="Reimbursement Description"
           required />
 
-        <label htmlFor="inputReimbType" className="sr-only">Reimbursement Type</label>
+
+        <div className="form-group">
+          <label htmlFor="inputReimbType" >Reimbursement Type:</label>
+          <select className="form-control" id="sel1">
+            <option>Lodging</option>
+            <option>Travel</option>
+            <option>Food</option>
+            <option>Other</option>
+          </select>
+        </div>
+        {/* <label htmlFor="inputReimbType" className="sr-only">Reimbursement Type</label>
         <input
           onChange={this.onReimbTypeSet}
           value={credentials.reimbType}
@@ -168,7 +149,7 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
           id="inputReimbType"
           className="form-control"
           placeholder="Reimbursement Type"
-          required />
+          required /> */}
 
         <button className="btn btn-lg btn-primary btn-block" type="submit" value="Add Node server">Sign in</button>
         {errorMessage && <p id="error-message">{errorMessage}</p>}
