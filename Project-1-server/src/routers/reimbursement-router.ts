@@ -10,7 +10,7 @@ export const reimbursementRouter = express.Router(); // routers represent a subs
  * Find all reimbursements
  */
 reimbursementRouter.get('', [
-  authMiddleware('admin', 'customer'),
+  // authMiddleware('admin', 'customer'),
   async (req: Request, resp: Response) => {
     try {
       console.log('retrieving all reimbursements');
@@ -53,6 +53,41 @@ reimbursementRouter.post('/add-reimbursement', [
       const id = await reimbursementDao.createReimbursement(req.body);
       resp.status(201);
       resp.json(id);
+    } catch (err) {
+      console.log(err);
+      resp.sendStatus(500);
+    }
+  }])
+
+  /**
+ * approve a reimbursement with id
+ */
+reimbursementRouter.post('/add-Approve/:id', [
+  
+  // authMiddleware('admin'),
+  async (req, resp) => {
+    const id = +req.params.id; // convert the id to a number
+    console.log(`creating approval with ${id}`)
+    try {
+       await reimbursementDao.approveById(id);
+      resp.status(201);
+    } catch (err) {
+      console.log(err);
+      resp.sendStatus(500);
+    }
+  }])
+
+    /**
+ * deny a reimbursement with id
+ */
+reimbursementRouter.post('/add-Deny/:id', [
+  // authMiddleware('admin'),
+  async (req, resp) => {
+    const id = +req.params.id; // convert the id to a number
+    console.log(`creating denial with ${id}`)
+    try {
+       await reimbursementDao.denyById(id);
+      resp.status(201);
     } catch (err) {
       console.log(err);
       resp.sendStatus(500);

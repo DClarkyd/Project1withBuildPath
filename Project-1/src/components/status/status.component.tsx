@@ -1,14 +1,8 @@
 import * as React from 'react';
 import { environment } from '../../environment';
 import { updateUsername } from '../../actions/sign-in/sign-in.actions';
-// import { signInReducer } from '../../reducers/sign-in.reducers';
-// import { store } from '../../Store';
-// import { IState } from '../../reducers';
-// import { connect } from 'react-redux';
-// import {getUser} from '../../actions/sign-in/sign-in.actions';
 
 export class CheckStatus extends React.Component<any, any>  {
-
 
   public constructor(props: any) {
     super(props);
@@ -19,7 +13,6 @@ export class CheckStatus extends React.Component<any, any>  {
       username: user
     }
   }
-
 
   public componentDidMount() {
 
@@ -32,7 +25,7 @@ export class CheckStatus extends React.Component<any, any>  {
     })
       .then(resp => resp.json())
       .then(reimbursements => {
-        
+
         this.setState({ reimbursements })
         console.log(reimbursements)
       })
@@ -62,7 +55,7 @@ export class CheckStatus extends React.Component<any, any>  {
           {
             this.state.reimbursements.map((reimbursement: any) => (
               <tr key={reimbursement.id} >
-               <td>{reimbursement.id}</td>
+                <td>{reimbursement.id}</td>
                 <td>{reimbursement.amount}</td>
                 <td>{reimbursement.submitted}</td>
                 <td>{reimbursement.resolved}</td>
@@ -70,14 +63,12 @@ export class CheckStatus extends React.Component<any, any>  {
                 <td>{reimbursement.author}</td>
                 <td>{reimbursement.resolver}</td>
                 <td>{reimbursement.typeId}</td>
-                <td>{reimbursement.statusId === 0? "pending": reimbursement.statusId === 1? "approved" : "denied"}</td>
-                </tr>
-                ))
-            }
-          </tbody>
-        </table>
-            );
+                <td>{reimbursement.statusId === 0 ? "pending" : reimbursement.statusId === 1 ? "approved" : "denied"}</td>
+              </tr>
+            ))
           }
-        }
-        
-// export default connect(mapStateToProps, mapDispatchToProps)(CheckStatus);
+        </tbody>
+      </table>
+    );
+  }
+}

@@ -31,6 +31,35 @@ export async function findById(id: number): Promise<Reimbursement[]> {
 }
 
 /**
+ * approve a reimbursement by its reimbursement id
+ * @param id 
+ */
+export async function approveById(id: number) {
+  const client = await connectionPool.connect();
+  console.log(id)
+  try {
+    const resp = await client.query('UPDATE expense_reimbursement.reimbursement_info SET reimb_status_id = 1 WHERE reimb_id = $1', [id]);
+
+  } finally {
+    client.release();
+  }
+}
+
+/**
+ * deny a reimbursement by its reimbursement id
+ * @param id 
+ */
+export async function denyById(id: number) {
+  const client = await connectionPool.connect();
+  try {
+    const resp = await client.query('UPDATE expense_reimbursement.reimbursement_info SET reimb_status_id = 2 WHERE reimb_id = $1', [id]);
+    
+  } finally {
+    client.release();
+  }
+}
+
+/**
  * Add a new reimbursement to the DB
  * @param reimbursement
  */

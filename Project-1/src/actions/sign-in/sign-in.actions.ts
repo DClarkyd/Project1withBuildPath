@@ -27,15 +27,4 @@ export const updateError = (errorMessage: string) => {
   }
 }
 
-// const currentUser : string
-// export const getUser = () => {
-//   return {
-    
-//     payload: {
-//      currentUser = store.getState()
-     
-//     },
-   
-//   }
-// }
 
