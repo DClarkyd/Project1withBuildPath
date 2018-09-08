@@ -4,7 +4,7 @@ import { reimbursementConverter } from "../util/reimbursement-converter";
 import { SqlReimbursement } from "../dto/sql-reimbursement";
 
 /**
- * Retreive all movies from the database
+ * Retreive all reimbursements from the database
  */
 export async function findAll(): Promise<Reimbursement[]> {
   const client = await connectionPool.connect();
@@ -17,19 +17,14 @@ export async function findAll(): Promise<Reimbursement[]> {
 }
 
 /**
- * Retreive a reimbursement by its id
+ * Retreive a reimbursement by its author id
  * @param id 
  */
-export async function findById(id: number): Promise<Reimbursement> {
+export async function findById(id: number): Promise<Reimbursement[]> {
   const client = await connectionPool.connect();
   try {
-    const resp = await client.query('SELECT * FROM expense_reimbursement.reimbursement_info WHERE reimb_id = $1', [id]);
-    let reimbursement: SqlReimbursement = resp.rows[0];
-    if (reimbursement !== undefined) {
-      return reimbursementConverter(reimbursement);
-    } else {
-      return undefined;
-    }
+    const resp = await client.query('SELECT * FROM expense_reimbursement.reimbursement_info WHERE reimb_author = $1', [id]);
+    return resp.rows.map(reimbursementConverter)
   } finally {
     client.release();
   }

@@ -15,64 +15,69 @@ export class CheckStatus extends React.Component<any, any>  {
     const userJSON = localStorage.getItem("user")
     const user = userJSON !== null ? JSON.parse(userJSON) : updateUsername
     this.state = {
-      // reimbursements: [],
+      reimbursements: [],
       username: user
     }
   }
 
 
   public componentDidMount() {
-    
+
     let usersId = this.state.username.usersId
-    usersId = parseInt(usersId, 10);
+    usersId = Number(usersId);
     console.log(usersId)
-    fetch(environment.context + `reimbursements/:${usersId}`, {
+    fetch(environment.context + `reimbursements/${usersId}`, {
       // body: JSON.stringify(user),
       credentials: 'include',
     })
-    .then( resp => resp.json())
-    .catch(err => {
-      console.log(err)
-    })
- }
-  // public componentDidMount() {
-  //   fetch(environment.context + 'reimbursement', {
-  //     credentials: 'include'
-  //   })
-  //     .then(resp => resp.json())
-  //     .then(username => {
-  //       this.setState({username});
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     })
-  // }
+      .then(resp => resp.json())
+      .then(reimbursements => {
+        
+        this.setState({ reimbursements })
+        console.log(reimbursements)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 
   public render() {
     // console.log(localStorage.getItem("user"))
     return (
-      <div>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col"> #</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Time Submitted</th>
-              <th scope="col">Time Resolved</th>
-              <th scope="col">Description</th>
-              <th scope="col">Author</th>
-              <th scope="col">Resolver</th>
-              <th scope="col">Type</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col"> #</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Time Submitted</th>
+            <th scope="col">Time Resolved</th>
+            <th scope="col">Description</th>
+            <th scope="col">Author</th>
+            <th scope="col">Resolver</th>
+            <th scope="col">Type</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody id="reimbursement-table-body">
+          {
+            this.state.reimbursements.map((reimbursement: any) => (
+              <tr key={reimbursement.id} >
+               <td>{reimbursement.id}</td>
+                <td>{reimbursement.amount}</td>
+                <td>{reimbursement.submitted}</td>
+                <td>{reimbursement.resolved}</td>
+                <td>{reimbursement.description}</td>
+                <td>{reimbursement.author}</td>
+                <td>{reimbursement.resolver}</td>
+                <td>{reimbursement.typeId}</td>
+                <td>{reimbursement.statusId === 0? "pending": reimbursement.statusId === 1? "approved" : "denied"}</td>
+                </tr>
+                ))
+            }
           </tbody>
         </table>
-      </div>
-    );
-  }
-}
-
+            );
+          }
+        }
+        
 // export default connect(mapStateToProps, mapDispatchToProps)(CheckStatus);
