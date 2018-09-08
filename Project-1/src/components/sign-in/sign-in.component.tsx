@@ -1,72 +1,43 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { ISignInState, IState } from '../../reducers';
+import * as signInActions from '../../actions/sign-in/sign-in.actions';
+import { connect } from 'react-redux';
 import { environment } from '../../environment';
 
-interface IState {
-  credentials: {
-    password: string,
-    username: string,
-  },
-  errorMessage: string
+interface IProps extends RouteComponentProps<{}>, ISignInState {
+  updateError: (message: string) => any
+  updatePassword: (password: string) => any,
+  updateUsername: (username: string) => any,
+  submit: (credentials: any) => any
 }
 
-export class SignInComponent extends React.Component<RouteComponentProps<{}>, IState> {
+class SignInComponent extends React.Component<IProps, {}> {
 
   constructor(props: any) {
     super(props);
-    this.state = {
-      credentials: {
-        password: '',
-        username: '',
-      },
-      errorMessage: ''
-    }
   }
 
-  public passwordChange = (e: any) => {
-    this.setState({
-      ...this.state,
-      credentials: {
-        ...this.state.credentials,
-        password: e.target.value
-      }
-    });
-  }
-
-  public usernameChange = (e: any) => {
-    this.setState({
-      ...this.state,
-      credentials: {
-        ...this.state.credentials,
-        username: e.target.value
-      }
-    });
-  }
 
   public submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     fetch(environment.context + 'users/login', {
-      body: JSON.stringify(this.state.credentials),
+      body: JSON.stringify(this.props.credentials),
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-    })    
+    })
       .then(resp => {
         console.log(resp.status)
         if (resp.status === 401) {
-          this.setState({
-            ...this.state,
-            errorMessage: 'Invalid Credentials'
-          });
+          this.props.updateError('Invalid Credentials');
         } else if (resp.status === 200) {
+    
           return resp.json();
         } else {
-          this.setState({
-            ...this.state,
-            errorMessage: 'Failed to Login at this time'
-          });
+          this.props.updateError('Failed to Login at this time');
         }
         throw new Error('Failed to login');
       })
@@ -78,10 +49,18 @@ export class SignInComponent extends React.Component<RouteComponentProps<{}>, IS
         console.log(err);
       });
   }
+  
+  public passwordChange = (e: any) => {
+    this.props.updatePassword(e.target.value);
+  }
+
+  public usernameChange = (e: any) => {
+    this.props.updateUsername(e.target.value);
+  }
 
 
   public render() {
-    const { errorMessage, credentials } = this.state;
+    const { errorMessage, credentials } = this.props;
 
     return (
       <form className="form-signin" onSubmit={this.submit}>
@@ -114,3 +93,11 @@ export class SignInComponent extends React.Component<RouteComponentProps<{}>, IS
   }
 }
 
+const mapStateToProps = (state: IState) => (state.signIn);
+const mapDispatchToProps = {
+  updateError: signInActions.updateError,
+  updatePassword: signInActions.updatePassword,
+  updateUsername: signInActions.updateUsername,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInComponent);

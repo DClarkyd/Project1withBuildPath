@@ -10,7 +10,7 @@ export const reimbursementRouter = express.Router(); // routers represent a subs
  * Find all reimbursements
  */
 reimbursementRouter.get('', [
-  // authMiddleware('admin', 'customer'),
+  authMiddleware('admin', 'customer'),
   async (req: Request, resp: Response) => {
     try {
       console.log('retrieving all reimbursements');
@@ -22,7 +22,7 @@ reimbursementRouter.get('', [
   }]);
 
 /**
- * Find reimbursement by id
+ * Find reimbursement by username
  */
 reimbursementRouter.get('/:id', async (req, resp) => {
   const id = +req.params.id; // convert the id to a number
