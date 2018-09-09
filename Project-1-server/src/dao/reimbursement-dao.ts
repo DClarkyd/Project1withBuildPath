@@ -56,7 +56,7 @@ export async function findDenied(): Promise<Reimbursement[]> {
 }
 
 /**
- * Retreive a reimbursement by its author id
+ * Retreive all reimbursement by its author id
  * @param id 
  */
 export async function findById(id: number): Promise<Reimbursement[]> {
@@ -77,8 +77,9 @@ export async function approveById(id: number) {
   const client = await connectionPool.connect();
   console.log(id)
   try {
-    const resp = await client.query('UPDATE expense_reimbursement.reimbursement_info SET reimb_status_id = 1 WHERE reimb_id = $1', [id]);
-
+    await client.query('UPDATE expense_reimbursement.reimbursement_info SET reimb_status_id = 1 WHERE reimb_id = $1', [id]);
+    const resp = await client.query('SELECT * FROM expense_reimbursement.reimbursement_info');
+    return resp.rows.map(reimbursementConverter);
   } finally {
     client.release();
   }
@@ -91,8 +92,9 @@ export async function approveById(id: number) {
 export async function denyById(id: number) {
   const client = await connectionPool.connect();
   try {
-    const resp = await client.query('UPDATE expense_reimbursement.reimbursement_info SET reimb_status_id = 2 WHERE reimb_id = $1', [id]);
-    
+    await client.query('UPDATE expense_reimbursement.reimbursement_info SET reimb_status_id = 2 WHERE reimb_id = $1', [id]);
+    const resp = await client.query('SELECT * FROM expense_reimbursement.reimbursement_info');
+    return resp.rows.map(reimbursementConverter);
   } finally {
     client.release();
   }

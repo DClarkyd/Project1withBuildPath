@@ -24,7 +24,6 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
       })
         .then(resp => resp.json())
         .then(reimbursements => {
-
           this.setState({ reimbursements })
         })
         .catch(err => {
@@ -44,27 +43,13 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
       },
       method: 'POST',
     })
-      .then(resp => {
-        console.log(resp.status)
-        if (resp.status === 401) {
-          this.setState({
-            ...this.state,
-            errorMessage: 'Invalid Credentials'
-          });
-        } else if (resp.status === 201) {
-          return resp.json();
-          this.forceUpdate()
-        } else {
-          this.setState({
-            ...this.state,
-            errorMessage: 'Failed to submit the reimbursement at this time'
-          });
-        }
-        throw new Error('Failed to reimburse');
-      })
+    .then(resp => resp.json())
+    .then(reimbursements => {
+      this.setState({ reimbursements })
+    })
       .then(resp => {
         localStorage.setItem('reimbursement', JSON.stringify(resp));
-        this.props.history.push('/home');
+
       })
       .catch(err => {
         console.log(err);
@@ -82,27 +67,13 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
       },
       method: 'POST',
     })
-      .then(resp => {
-        console.log(resp.status)
-        if (resp.status === 401) {
-          this.setState({
-            ...this.state,
-            errorMessage: 'Invalid Credentials'
-          });
-        } else if (resp.status === 201) {
-          return resp.json();
-          this.forceUpdate()
-        } else {
-          this.setState({
-            ...this.state,
-            errorMessage: 'Failed to submit the reimbursement at this time'
-          });
-        }
-        throw new Error('Failed to reimburse');
-      })
+    .then(resp => resp.json())
+    .then(reimbursements => {
+      this.setState({ reimbursements })
+    })
       .then(resp => {
         localStorage.setItem('reimbursement', JSON.stringify(resp));
-        this.props.history.push('/home');
+        // this.props.history.push('/home');
       })
       .catch(err => {
         console.log(err);

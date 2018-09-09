@@ -115,8 +115,10 @@ reimbursementRouter.post('/add-Approve/:id', [
     const id = +req.params.id; // convert the id to a number
     console.log(`creating approval with ${id}`)
     try {
-       await reimbursementDao.approveById(id);
-      resp.status(201);
+      let reimbursements = await reimbursementDao.approveById(id);
+      resp.json(reimbursements);
+      //  await reimbursementDao.approveById(id);
+      // resp.status(201);
     } catch (err) {
       console.log(err);
       resp.sendStatus(500);
@@ -132,8 +134,10 @@ reimbursementRouter.post('/add-Deny/:id', [
     const id = +req.params.id; // convert the id to a number
     console.log(`creating denial with ${id}`)
     try {
-       await reimbursementDao.denyById(id);
-      resp.status(201);
+      let reimbursements = await reimbursementDao.denyById(id);
+      resp.json(reimbursements);
+      //  await reimbursementDao.denyById(id);
+      // resp.status(201);
     } catch (err) {
       console.log(err);
       resp.sendStatus(500);
