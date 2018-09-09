@@ -128,7 +128,7 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
   public render() {
     return (
 
-      <table className="table table-striped">
+      <table style={{background: '#ADD8E6'}} className="table table-striped">
 
         <thead>
           <tr>

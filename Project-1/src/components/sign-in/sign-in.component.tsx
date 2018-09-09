@@ -63,8 +63,9 @@ class SignInComponent extends React.Component<IProps, {}> {
     const { errorMessage, credentials } = this.props;
 
     return (
-      <form className="form-signin" onSubmit={this.submit}>
-        <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <div style={{background: '#ADD8E6'}}>
+      <form style={{background: '#ADD8E6'}} className="form-signin" onSubmit={this.submit}>
+        <h1 style={{background: '#ADD8E6'}} className="h3 mb-3 font-weight-normal">Please sign in</h1>
 
         <label htmlFor="inputUsername" className="sr-only">Username</label>
         <input
@@ -89,6 +90,7 @@ class SignInComponent extends React.Component<IProps, {}> {
         <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         {errorMessage && <p id="error-message">{errorMessage}</p>}
       </form>
+      </div>
     );
   }
 }

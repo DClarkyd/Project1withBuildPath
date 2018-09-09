@@ -108,7 +108,7 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
     const { errorMessage, credentials } = this.state;
     // const date = new Date()
     return (
-      <form className="form-signup" onSubmit={this.onSubmit}>
+      <form style={{background: '#ADD8E6'}} className="form-signup" onSubmit={this.onSubmit}>
         <h1 className="h3 mb-3 font-weight-normal">Please fill in the reimbursement information</h1>
 
         <div>Reimbursement Amount:</div>

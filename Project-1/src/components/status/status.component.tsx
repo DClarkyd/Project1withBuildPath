@@ -38,7 +38,9 @@ export class CheckStatus extends React.Component<any, any>  {
   public render() {
     // console.log(localStorage.getItem("user"))
     return (
-      <table className="table table-striped">
+      
+      <table style={{background: '#ADD8E6'}} className="table table-striped">
+      
         <thead>
           <tr>
             <th scope="col"> #</th>
