@@ -17,6 +17,45 @@ export async function findAll(): Promise<Reimbursement[]> {
 }
 
 /**
+ * Retreive all approved reimbursements from the database
+ */
+export async function findApproved(): Promise<Reimbursement[]> {
+  const client = await connectionPool.connect();
+  try {
+    const resp = await client.query('SELECT * FROM expense_reimbursement.reimbursement_info WHERE reimb_status_id = 1');
+    return resp.rows.map(reimbursementConverter);
+  } finally {
+    client.release();
+  }
+}
+
+/**
+ * Retreive all pending reimbursements from the database
+ */
+export async function findPending(): Promise<Reimbursement[]> {
+  const client = await connectionPool.connect();
+  try {
+    const resp = await client.query('SELECT * FROM expense_reimbursement.reimbursement_info WHERE reimb_status_id = 0');
+    return resp.rows.map(reimbursementConverter);
+  } finally {
+    client.release();
+  }
+}
+
+/**
+ * Retreive all denied reimbursements from the database
+ */
+export async function findDenied(): Promise<Reimbursement[]> {
+  const client = await connectionPool.connect();
+  try {
+    const resp = await client.query('SELECT * FROM expense_reimbursement.reimbursement_info WHERE reimb_status_id = 2');
+    return resp.rows.map(reimbursementConverter);
+  } finally {
+    client.release();
+  }
+}
+
+/**
  * Retreive a reimbursement by its author id
  * @param id 
  */

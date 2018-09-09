@@ -22,6 +22,52 @@ reimbursementRouter.get('', [
   }]);
 
 /**
+ * Find all pending reimbursements
+ */
+reimbursementRouter.get('/filter-pending', [
+  // authMiddleware('admin', 'customer'),
+  async (req: Request, resp: Response) => {
+    try {
+      console.log('retrieving all pending reimbursements');
+      let reimbursements = await reimbursementDao.findPending();
+      resp.json(reimbursements);
+    } catch (err) {
+      resp.sendStatus(500);
+    }
+  }]);
+
+/**
+ * Find all pending reimbursements
+ */
+reimbursementRouter.get('/filter-approved', [
+  // authMiddleware('admin', 'customer'),
+  async (req: Request, resp: Response) => {
+    try {
+      console.log('retrieving all approved reimbursements');
+      let reimbursements = await reimbursementDao.findApproved();
+      resp.json(reimbursements);
+    } catch (err) {
+      resp.sendStatus(500);
+    }
+  }]);
+
+  /**
+ * Find all pending reimbursements
+ */
+reimbursementRouter.get('/filter-denied', [
+  // authMiddleware('admin', 'customer'),
+  async (req: Request, resp: Response) => {
+    try {
+      console.log('retrieving all denied reimbursements');
+      let reimbursements = await reimbursementDao.findDenied();
+      resp.json(reimbursements);
+    } catch (err) {
+      resp.sendStatus(500);
+    }
+  }]);
+
+
+/**
  * Find reimbursement by username
  */
 reimbursementRouter.get('/:id', async (req, resp) => {

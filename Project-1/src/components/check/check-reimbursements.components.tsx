@@ -17,42 +17,25 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
   }
 
   public componentDidMount() {
-
-    let usersId = this.state.username.usersId
-    usersId = Number(usersId);
-    console.log(usersId)
-    fetch(environment.context + `reimbursements`, {
-      // body: JSON.stringify(user),
-      credentials: 'include',
-    })
-      .then(resp => resp.json())
-      .then(reimbursements => {
-
-        this.setState({ reimbursements })
-        // console.log(reimbursements)
+    console.log(this.state.reimbursements)
+    if (this.state.reimbursements.length === 0) {
+      fetch(environment.context + `reimbursements`, {
+        credentials: 'include',
       })
-      .catch(err => {
-        console.log(err)
-      })
+        .then(resp => resp.json())
+        .then(reimbursements => {
+
+          this.setState({ reimbursements })
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 
-  // public approveReimb = (e: any) => {
-  //   this.setState({
-  //     ...this.state,
-  //       status: "approve"
-  //   });
-  // }
-
-  // public denyReimb = (e: any) => {
-  //   this.setState({
-  //     ...this.state,
-  //       status: "deny"
-  //   });
-  // }
-
-  public onApprove = (reimbursementId: any, e :any) => {
+  public onApprove = (reimbursementId: any, e: any) => {
     e.preventDefault()
-    console.log("reimbursementId:"+reimbursementId)
+    console.log("reimbursementId:" + reimbursementId)
     fetch(environment.context + `reimbursements/add-Approve/${reimbursementId}`, {
       body: JSON.stringify(this.state.credentials),
       credentials: 'include',
@@ -70,6 +53,7 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
           });
         } else if (resp.status === 201) {
           return resp.json();
+          this.forceUpdate()
         } else {
           this.setState({
             ...this.state,
@@ -87,9 +71,9 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
       })
   }
 
-  public onDeny = (reimbursementId: any, e :any) => {
+  public onDeny = (reimbursementId: any, e: any) => {
     e.preventDefault()
-    console.log("reimbursementId:"+reimbursementId)
+    console.log("reimbursementId:" + reimbursementId)
     fetch(environment.context + `reimbursements/add-Deny/${reimbursementId}`, {
       body: JSON.stringify(this.state.credentials),
       credentials: 'include',
@@ -107,6 +91,7 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
           });
         } else if (resp.status === 201) {
           return resp.json();
+          this.forceUpdate()
         } else {
           this.setState({
             ...this.state,
@@ -124,10 +109,56 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
       })
   }
 
+  public onFilterApproved = (e: any) => {
+    e.preventDefault()
+
+    fetch(environment.context + `reimbursements/filter-approved`, {
+      credentials: 'include',
+    })
+      .then(resp => resp.json())
+      .then(reimbursements => {
+        this.setState({ reimbursements })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  public onFilterDenied = (e: any) => {
+    e.preventDefault()
+
+    fetch(environment.context + `reimbursements/filter-denied`, {
+      credentials: 'include',
+    })
+      .then(resp => resp.json())
+      .then(reimbursements => {
+        this.setState({ reimbursements })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  public onFilterPending = (e: any) => {
+    e.preventDefault()
+
+    fetch(environment.context + `reimbursements/filter-pending`, {
+      credentials: 'include',
+    })
+      .then(resp => resp.json())
+      .then(reimbursements => {
+        this.setState({ reimbursements })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   public render() {
-    // console.log(localStorage.getItem("user"))
     return (
+
       <table className="table table-striped">
+
         <thead>
           <tr>
             <th scope="col"> #</th>
@@ -138,7 +169,22 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
             <th scope="col">Author</th>
             <th scope="col">Resolver</th>
             <th scope="col">Type</th>
-            <th scope="col">Status</th>
+            <th scope="col">
+              <div>Filter Status By:</div>
+              <button className="btn btn-lg btn-primary btn-block"
+                onClick={(e) => this.onFilterPending(e)}>
+                Pending
+           </button>
+              <button className="btn btn-lg btn-primary btn-block"
+                onClick={(e) => this.onFilterApproved(e)}>
+                Approved
+           </button>
+              <button className="btn btn-lg btn-primary btn-block"
+                onClick={(e) => this.onFilterDenied(e)}>
+                Denied
+        </button>
+              <div>Status</div>
+            </th>
           </tr>
         </thead>
         <tbody id="reimbursement-table-body">
@@ -148,12 +194,12 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
                 <td>{reimbursement.id}
 
                   <button
-                    className="btn rev-btn"
+                    className="btn btn-lg btn-primary btn-block"
                     onClick={(e) => this.onApprove(reimbursement.id, e)}
                   >Approve</button>
 
                   <button
-                    className="btn rev-btn"
+                    className="btn btn-lg btn-primary btn-block"
                     onClick={(e) => this.onDeny(reimbursement.id, e)}
                   >Deny</button>
 
@@ -164,10 +210,10 @@ export class CheckAllReimbursements extends React.Component<any, any>  {
                 <td>{reimbursement.description}</td>
                 <td>{reimbursement.author}</td>
                 <td>{reimbursement.resolver}</td>
-                <td>{reimbursement.typeId}</td>
                 <td>
-                  {reimbursement.statusId === 0 ? "pending" : reimbursement.statusId === 1 ? "approved" : "denied"}
+                  {reimbursement.typeId === 0 ? "Lodging" : reimbursement.typeId === 2 ? "Travel" : reimbursement.typeId === 3 ? "Food" : "Other"}
                 </td>
+                <td>{reimbursement.statusId === 0 ? "pending" : reimbursement.statusId === 1 ? "approved" : "denied"}</td>
               </tr>
             ))
           }

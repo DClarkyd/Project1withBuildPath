@@ -17,8 +17,9 @@ export class CheckStatus extends React.Component<any, any>  {
   public componentDidMount() {
 
     let usersId = this.state.username.usersId
+    console.log(this.state.username.roleId)
     usersId = Number(usersId);
-    console.log(usersId)
+    
     fetch(environment.context + `reimbursements/${usersId}`, {
       // body: JSON.stringify(user),
       credentials: 'include',
@@ -62,7 +63,10 @@ export class CheckStatus extends React.Component<any, any>  {
                 <td>{reimbursement.description}</td>
                 <td>{reimbursement.author}</td>
                 <td>{reimbursement.resolver}</td>
-                <td>{reimbursement.typeId}</td>
+                <td>{reimbursement.typeId === 0? "Lodging":
+                 reimbursement.typeId === 2? "Travel":
+                  reimbursement.typeId === 3? "Food":
+                   "Other" }</td>
                 <td>{reimbursement.statusId === 0 ? "pending" : reimbursement.statusId === 1 ? "approved" : "denied"}</td>
               </tr>
             ))

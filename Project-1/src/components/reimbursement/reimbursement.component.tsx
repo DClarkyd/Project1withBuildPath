@@ -23,7 +23,6 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
 
     const userJSON = localStorage.getItem("user")
     const user = userJSON !== null ? JSON.parse(userJSON) : updateUsername
-    console.log(user.usersId)
     
     this.state = {
       credentials: {
@@ -57,6 +56,7 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
   }
 
   public onReimbTypeSet = (e: any) => {
+    
     this.setState({
       ...this.state,
       credentials: {
@@ -64,6 +64,7 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
         reimbType: e.target.value
       }
     });
+    console.log(this.state)
   }
 
   public onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -134,22 +135,18 @@ export class ReimbursementComponent extends React.Component<RouteComponentProps<
 
         <div className="form-group">
           <label htmlFor="inputReimbType" >Reimbursement Type:</label>
-          <select className="form-control" id="sel1">
-            <option>Lodging</option>
-            <option>Travel</option>
-            <option>Food</option>
-            <option>Other</option>
-          </select>
-        </div>
-        {/* <label htmlFor="inputReimbType" className="sr-only">Reimbursement Type</label>
-        <input
+          <select className="form-control"
+           id="sel1" 
           onChange={this.onReimbTypeSet}
           value={credentials.reimbType}
-          type="text"
-          id="inputReimbType"
-          className="form-control"
           placeholder="Reimbursement Type"
-          required /> */}
+     >
+            <option value = "1">Lodging</option>
+            <option value = "2">Travel</option>
+            <option value = "3">Food</option>
+            <option value = "4">Other</option>
+          </select>
+        </div>
 
         <button className="btn btn-lg btn-primary btn-block" type="submit" value="Add Node server">Sign in</button>
         {errorMessage && <p id="error-message">{errorMessage}</p>}
