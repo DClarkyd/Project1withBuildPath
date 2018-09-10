@@ -16,6 +16,7 @@ class SignInComponent extends React.Component<IProps, {}> {
 
   constructor(props: any) {
     super(props);
+    localStorage.clear()
   }
 
 

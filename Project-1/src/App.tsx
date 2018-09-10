@@ -21,6 +21,7 @@ export class App extends React.Component<any, any> {
     let user 
     if( userJSON !== null ){
       user = JSON.parse(userJSON) 
+      console.log (user)
     this.state = {
       username: user
     }
@@ -37,14 +38,13 @@ export class App extends React.Component<any, any> {
             <AppNav />
             <div id="main-content-container">
               <Switch>
-
-                <Route path="/check-reimbursements" component={this.state.username !== null ? this.state.username.usersId === 1 ? CheckAllReimbursements : CheckStatus : CheckStatus} />
+                <Route path="/check-reimbursements" component={this.state.username !== null ? this.state.username.roleId === "1" ? CheckAllReimbursements : CheckStatus : CheckStatus} />
 
                 <Route path="/add-reimbursement" component={ReimbursementComponent} />
                 <Route path="/sign-in" component={SignInComponent} />
                 <Route path="/sign-up" component={SignUpComponent} />
                 <Route path="/check-status" component={CheckStatus} />
-                <Route path="/log-out" component={LogOutComponent} />
+                <Route path="/log-out" {...localStorage.clear()}component={LogOutComponent} />
                 <Route component={CheckStatus} />
               </Switch>
             </div>

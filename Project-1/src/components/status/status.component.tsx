@@ -16,7 +16,7 @@ export class CheckStatus extends React.Component<any, any>  {
 
   public componentDidMount() {
 
-    let usersId = this.state.username.usersId
+    let usersId = this.state.username === null? this.state.username.usersId : 1
     console.log(this.state.username.roleId)
     usersId = Number(usersId);
     
