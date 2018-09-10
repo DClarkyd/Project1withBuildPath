@@ -44,10 +44,10 @@ app.use(bodyParser.json());
 
 // allows cors headers
 app.use((req, resp, next) => {
-  resp.header('Access-Control-Allow-Origin', "http://localhost:9011")
-  // (process.env.REIMBURSEMENT_API_STAGE === 'prod')
-  // ? resp.header('Access-Control-Allow-Origin', process.env.DEMO_APP_URL)
-  // : resp.header('Access-Control-Allow-Origin', `http://localhost:9011`);
+  // resp.header('Access-Control-Allow-Origin', "http://localhost:9011")
+  (process.env.REIMBURSEMENT_API_STAGE === 'prod')
+  ? resp.header('Access-Control-Allow-Origin', process.env.DEMO_APP_URL)
+  : resp.header('Access-Control-Allow-Origin', `http://localhost:9011`);
   resp.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   resp.header("Access-Control-Allow-Credentials", "true");
   next();
