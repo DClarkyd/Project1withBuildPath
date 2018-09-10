@@ -5,7 +5,6 @@ import { CheckAllReimbursements } from './components/check/check-reimbursements.
 import { ReimbursementComponent } from './components/reimbursement/reimbursement.component';
 import { AppNav } from './components/nav/nav.component';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-// import { HomeComponent } from './components/home/home.component';
 import SignInComponent from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { LogOutComponent } from './components/log-out/log-out.component';
@@ -38,7 +37,7 @@ export class App extends React.Component<any, any> {
             <AppNav />
             <div id="main-content-container">
               <Switch>
-                <Route path="/check-reimbursements" component={this.state.username !== null ? this.state.username.roleId === "1" ? CheckAllReimbursements : CheckStatus : CheckStatus} />
+                <Route path="/check-reimbursements" component={process.env.NODE_ENV !== 'production' ? this.state.username.roleId === "1" ? CheckAllReimbursements : CheckStatus : CheckStatus} />
 
                 <Route path="/add-reimbursement" component={ReimbursementComponent} />
                 <Route path="/sign-in" component={SignInComponent} />

@@ -10,9 +10,6 @@ export interface ISignInState {
   }
 
   export interface IState {
-    // reimbursement: IReimbursementState,
-    // status: IStatusState,
-    // approve: IApproveState
     signIn: ISignInState,
   }
 
