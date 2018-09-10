@@ -18,11 +18,14 @@ export class App extends React.Component<any, any> {
   public constructor(props: any) {
     super(props);
     const userJSON = localStorage.getItem("user")
-    const user = userJSON !== null ? JSON.parse(userJSON) : null
+    let user 
+    if( userJSON !== null ){
+      user = JSON.parse(userJSON) 
     this.state = {
       username: user
     }
   }
+}
 
   public render() {
 
@@ -35,7 +38,7 @@ export class App extends React.Component<any, any> {
             <div id="main-content-container">
               <Switch>
 
-                <Route path="/check-reimbursements" component={this.state.username.usersId === 1 ? CheckAllReimbursements : CheckStatus} />
+                <Route path="/check-reimbursements" component={this.state.username !== null ? this.state.username.usersId === 1 ? CheckAllReimbursements : CheckStatus : CheckStatus} />
 
                 <Route path="/add-reimbursement" component={ReimbursementComponent} />
                 <Route path="/sign-in" component={SignInComponent} />
